@@ -1,0 +1,11 @@
+node_modules
+dist
+.DS_Store
+*.local
+
+# Native Capacitor project — regenerated fresh by the GitHub Actions build
+# (see .github/workflows/build-apk.yml). Not committed so there's nothing
+# native to keep in sync by hand; if you later want to customize the native
+# project (custom icon, splash screen, permissions) run `npx cap add android`
+# locally, commit android/, and switch the workflow to `cap sync` instead.
+android
