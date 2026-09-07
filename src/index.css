@@ -1,3 +1,22 @@
+:root {
+  /* Palette lifted from the worawork.vercel.app reference: warm wood +
+     cream UI chrome, sage/moss greenery, terracotta roofs, soft sky blue. */
+  --wood-dark: #3a2312;
+  --wood-mid: #8b6239;
+  --wood-mid-dark: #6b4826;
+  --cream: #f6e1ac;
+  --cream-light: #fbf1d6;
+  --ink: #6b4a2a;
+  --ink-soft: #8a6239;
+  --sage: #7c9a5d;
+  --sage-dark: #5f7a45;
+  --moss: #6b8c4f;
+  --terracotta: #c1573e;
+  --sky: #8fd0ea;
+  --gold: #f2c464;
+  --vignette: #140b06;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -13,8 +32,9 @@ body,
 }
 
 body {
-  font-family: "Baloo 2", "Comic Sans MS", "Segoe UI", system-ui, sans-serif;
-  background: #bfe8ff;
+  font-family: "Fredoka", "Baloo 2", "Comic Sans MS", "Segoe UI", system-ui,
+    sans-serif;
+  background: var(--vignette);
   -webkit-tap-highlight-color: transparent;
   user-select: none;
 }

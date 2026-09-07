@@ -2,7 +2,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import type { RefObject } from "react";
 
-const OFFSET = new THREE.Vector3(6, 8, 6);
+const OFFSET = new THREE.Vector3(6, 11, 6);
 const _desired = new THREE.Vector3();
 const _lookAt = new THREE.Vector3();
 

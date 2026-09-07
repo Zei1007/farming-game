@@ -11,14 +11,19 @@ export function DialogueBox() {
   return (
     <div className="dialogue-overlay" onClick={closeDialogue}>
       <div className="dialogue-box" onClick={(e) => e.stopPropagation()}>
+        <button
+          className="dialogue-close"
+          onClick={closeDialogue}
+          aria-label="Close"
+        >
+          ✕
+        </button>
         <div className="dialogue-name">
           {npc?.name ?? "???"}
           <span className="dialogue-role"> · {npc?.role}</span>
         </div>
         <div className="dialogue-line">{dialogue.line}</div>
-        <button className="dialogue-close" onClick={closeDialogue}>
-          Sige, salamat!
-        </button>
+        <div className="dialogue-continue">▼</div>
       </div>
     </div>
   );

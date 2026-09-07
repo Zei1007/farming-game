@@ -2,6 +2,7 @@
   position: relative;
   width: 100vw;
   height: 100dvh;
+  background: var(--vignette);
 }
 
 .app-root canvas {
@@ -9,20 +10,70 @@
   inset: 0;
 }
 
+/* ---------- Vignette frame (matches the reference's dark letterboxed look) ---------- */
+.vignette-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(20, 11, 6, 0.55) 92%,
+    rgba(20, 11, 6, 0.88) 100%
+  );
+}
+
 /* ---------- shared panel look ---------- */
 .hud-pill,
 .seed-slot,
 .dialogue-box,
 .toast,
-.joystick-base {
+.joystick-base,
+.corner-btn,
+.help-modal {
   font-family: inherit;
 }
 
-/* ---------- HUD (top) ---------- */
+/* ---------- Corner buttons (? help, sound) ---------- */
+.corner-btn {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--wood-mid);
+  border: 3px solid var(--cream-light);
+  color: var(--cream-light);
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+  z-index: 12;
+}
+
+.corner-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+.corner-btn-help {
+  left: calc(env(safe-area-inset-left, 0px) + 16px);
+}
+
+.corner-btn-sound {
+  right: calc(env(safe-area-inset-right, 0px) + 16px);
+}
+
+/* ---------- HUD (top center) ---------- */
 .hud-top {
   position: absolute;
-  top: calc(env(safe-area-inset-top, 0px) + 12px);
-  left: calc(env(safe-area-inset-left, 0px) + 12px);
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   gap: 8px;
   z-index: 10;
@@ -33,14 +84,14 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #fff7e6;
-  border: 3px solid #e8c98a;
+  background: var(--cream);
+  border: 3px solid var(--wood-mid);
   border-radius: 999px;
   padding: 6px 14px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 15px;
-  color: #6b4a26;
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+  color: var(--ink);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
 }
 
 .hud-pill-icon {
@@ -48,9 +99,9 @@
 }
 
 .hud-buff {
-  background: #eaffe0;
-  border-color: #9adb7a;
-  color: #3c6b26;
+  background: #eaf2d8;
+  border-color: var(--sage);
+  color: var(--sage-dark);
   animation: pulse 1.1s ease-in-out infinite;
 }
 
@@ -80,16 +131,16 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  background: #fff7e6;
-  border: 3px solid #e8c98a;
+  background: var(--cream);
+  border: 3px solid var(--wood-mid);
   border-radius: 18px;
   padding: 6px;
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
   transition: border-color 0.15s, transform 0.15s;
 }
 
 .seed-slot-selected {
-  border-color: #4f9e4f;
+  border-color: var(--sage-dark);
   transform: translateY(-4px);
 }
 
@@ -111,19 +162,19 @@
 .seed-count {
   font-size: 12px;
   font-weight: 700;
-  color: #6b4a26;
+  color: var(--ink);
 }
 
 .seed-buy-btn {
   border: none;
-  background: #f2a33c;
-  color: #fff;
+  background: var(--sage-dark);
+  color: var(--cream-light);
   font-weight: 700;
   font-size: 11px;
   border-radius: 10px;
   padding: 3px 8px;
   cursor: pointer;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
 }
 
 .seed-buy-btn:active {
@@ -139,8 +190,8 @@
   width: 92px;
   height: 92px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.35);
-  border: 3px solid rgba(255, 255, 255, 0.6);
+  background: rgba(246, 225, 172, 0.3);
+  border: 3px solid rgba(246, 225, 172, 0.55);
   z-index: 10;
 }
 
@@ -153,12 +204,12 @@
   margin-top: -22px;
   margin-left: -22px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  border: 3px solid #e8c98a;
+  background: var(--cream-light);
+  border: 3px solid var(--wood-mid);
   pointer-events: none;
 }
 
-/* ---------- Dialogue box ---------- */
+/* ---------- Dialogue box (AC-style bubble with tail + continue chevron) ---------- */
 .dialogue-overlay {
   position: absolute;
   inset: 0;
@@ -166,52 +217,215 @@
   align-items: flex-end;
   justify-content: center;
   z-index: 20;
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 150px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 160px);
 }
 
 .dialogue-box {
-  background: #fff7e6;
-  border: 4px solid #e8c98a;
-  border-radius: 20px;
-  padding: 16px 20px;
+  position: relative;
+  background: var(--cream);
+  border: 4px solid var(--wood-mid);
+  border-radius: 22px;
+  padding: 16px 20px 22px;
   max-width: min(420px, 86vw);
-  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* speech-bubble tail pointing down toward the character */
+.dialogue-box::after {
+  content: "";
+  position: absolute;
+  left: 34px;
+  bottom: -16px;
+  width: 22px;
+  height: 22px;
+  background: var(--cream);
+  border-right: 4px solid var(--wood-mid);
+  border-bottom: 4px solid var(--wood-mid);
+  border-radius: 0 0 6px 0;
+  transform: rotate(45deg);
 }
 
 .dialogue-name {
-  font-weight: 800;
-  color: #6b4a26;
+  font-weight: 700;
+  color: var(--ink);
   margin-bottom: 6px;
 }
 
 .dialogue-role {
   font-weight: 500;
   font-size: 12px;
-  color: #a9895c;
+  color: var(--ink-soft);
 }
 
 .dialogue-line {
-  color: #4a3419;
+  color: var(--ink);
   font-size: 15px;
   line-height: 1.4;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
+}
+
+.dialogue-continue {
+  display: flex;
+  justify-content: flex-end;
+  color: var(--ink-soft);
+  font-size: 14px;
+  animation: bob 1s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
 }
 
 .dialogue-close {
-  border: none;
-  background: #4f9e4f;
-  color: #fff;
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid var(--wood-mid);
+  background: var(--cream-light);
+  color: var(--ink);
   font-weight: 700;
-  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* ---------- Help modal (tabbed panel, backdrop-blurred, matches reference) ---------- */
+.help-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 11, 6, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 20px;
+}
+
+.help-modal {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: 84vh;
+  overflow-y: auto;
+  background: linear-gradient(180deg, var(--cream) 0%, #efce8e 100%);
+  border: 4px solid var(--wood-mid);
+  border-radius: 26px;
+  padding: 26px 22px 22px;
+  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.25);
+}
+
+.help-close {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid var(--wood-mid);
+  background: var(--cream-light);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
+}
+
+.help-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.help-tab {
+  border: 2px dashed var(--wood-mid);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13px;
   padding: 8px 16px;
   cursor: pointer;
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+}
+
+.help-tab-active {
+  background: var(--cream-light);
+}
+
+.help-card {
+  background: var(--cream-light);
+  border-radius: 20px;
+  padding: 18px 20px;
+  box-shadow: inset 0 0 0 1px rgba(139, 98, 57, 0.15);
+}
+
+.help-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+
+.help-card h3::before {
+  content: "";
+  width: 4px;
+  height: 16px;
+  background: var(--gold);
+  border-radius: 2px;
+}
+
+.help-card p {
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 14px;
+}
+
+.help-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Interact prompt (floating "E" chip over tappable props) ---------- */
+.interact-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--cream);
+  border: 2px solid var(--wood-mid);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13px;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
+  animation: bob 1s ease-in-out infinite;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
 /* ---------- Toasts ---------- */
 .toast-layer {
   position: absolute;
-  top: calc(env(safe-area-inset-top, 0px) + 60px);
+  top: calc(env(safe-area-inset-top, 0px) + 70px);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -223,13 +437,13 @@
 }
 
 .toast {
-  background: rgba(255, 247, 230, 0.95);
-  border: 2px solid #e8c98a;
+  background: rgba(246, 225, 172, 0.95);
+  border: 2px solid var(--wood-mid);
   border-radius: 999px;
   padding: 6px 14px;
   font-size: 13px;
   font-weight: 600;
-  color: #6b4a26;
+  color: var(--ink);
   animation: toast-in 0.25s ease-out;
   white-space: nowrap;
 }
@@ -252,8 +466,8 @@
   left: 50%;
   transform: translateX(-50%);
   font-size: 11px;
-  color: #3c2c14;
-  background: rgba(255, 255, 255, 0.55);
+  color: var(--cream-light);
+  background: rgba(20, 11, 6, 0.45);
   padding: 3px 10px;
   border-radius: 999px;
   z-index: 9;

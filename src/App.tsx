@@ -6,6 +6,7 @@ import { SeedBar } from "./ui/SeedBar";
 import { DialogueBox } from "./ui/DialogueBox";
 import { ToastLayer } from "./ui/ToastLayer";
 import { VirtualJoystick } from "./ui/VirtualJoystick";
+import { CornerButtons } from "./ui/CornerButtons";
 import { useKeyboardControls } from "./hooks/useKeyboardControls";
 import { useGameStore } from "./state/useGameStore";
 import "./App.css";
@@ -24,10 +25,12 @@ export default function App() {
 
   return (
     <div className="app-root">
-      <Canvas shadows camera={{ position: [6, 8, 9], fov: 42 }}>
+      <Canvas shadows>
         <Scene />
       </Canvas>
+      <div className="vignette-overlay" />
 
+      <CornerButtons />
       <HUD />
       <SeedBar />
       <VirtualJoystick />
